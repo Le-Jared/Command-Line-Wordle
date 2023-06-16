@@ -11,7 +11,6 @@ import (
 
 var wordList = []string{
 	"apple", "table", "grape", "chair", "place", "bread", "light", "sound", "earth",
-	// add more 5-letter words here
 }
 
 type GuessResult struct {
@@ -48,8 +47,9 @@ func isWordInList(word string, list []string) bool {
 }
 
 func main() {
-	rand.Seed(time.Now().Unix())
-	target := wordList[rand.Intn(len(wordList))]
+    s := rand.NewSource(time.Now().Unix())
+    r := rand.New(s)
+    target := wordList[r.Intn(len(wordList))]
 
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -57,8 +57,8 @@ func main() {
 
 	for i := 0; i < 6; i++ {
 		fmt.Printf("Guess #%d: ", i+1)
-		scanner.Scan()
-		guess := scanner.Text()
+        scanner.Scan()
+        guess := strings.ToLower(scanner.Text())
 
 		if len(guess) != 5 {
 			fmt.Println("Please input a 5-letter word.")
